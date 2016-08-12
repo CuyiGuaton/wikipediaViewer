@@ -6,6 +6,14 @@ function searchInWiki(search) {
     //https://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url
     //son lo casi mismo (cambiar jsonfm por json y quitar callback para ver, callback se pone al final del link para enviar algo a la wiki y no te de error)
     //$.getJSON("https://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url&callback=?", function (data){
+    // $.ajax({
+    //   url: 'http://en.wikipedia.org/w/api.php',
+    //   data: { action: 'query', list: 'search', srsearch: 'pico', format: 'json' },
+    //   dataType: 'jsonp',
+    //   success: function (x) {
+    //     console.log('title', x.query.search[2].title);
+    //   }
+    // });
     $.ajax({
         url: 'http://en.wikipedia.org/w/api.php',
         data: {
