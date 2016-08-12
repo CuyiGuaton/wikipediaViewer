@@ -3,9 +3,9 @@ function searchInWiki(search) {
     //https://en.wikipedia.org/w/api.php?action=opensearch&search=pico&aplimit=10&&format=jsonfm
     //El ajax de abajo lo conseguiste de
     //http://stackoverflow.com/questions/25891076/wikipedia-api-fulltext-search-to-return-articles-with-title-snippet-and-image
-    //https://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url
+    //http://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url
     //son lo casi mismo (cambiar jsonfm por json y quitar callback para ver, callback se pone al final del link para enviar algo a la wiki y no te de error)
-    //$.getJSON("https://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url&callback=?", function (data){
+    //$.getJSON("http://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url&callback=?", function (data){
     // $.ajax({
     //   url: 'http://en.wikipedia.org/w/api.php',
     //   data: { action: 'query', list: 'search', srsearch: 'pico', format: 'json' },
@@ -52,8 +52,9 @@ function processData(data) {
     $.each(data, function(ind, elem) {
       html += '<li class="collection-item avatar">';
       if(elem.thumbnail != undefined){
-      html += '<img src="' + elem.thumbnail.source +  '" alt="" class="circle">';}
-      html +=  '<span class="'+ elem.title + '">Title</span>'
+      html += '<img src="' + elem.thumbnail.source +  '" alt="" class="circle">';
+    }
+      html +=  '<a href="' +  elem.canonicalurl +  '" class="title">'+ elem.title + '</a>'
       html +=  '<p>'+ elem.extract  + '</p>';
     });
     $("#result").html(html);
