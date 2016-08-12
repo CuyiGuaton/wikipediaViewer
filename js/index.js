@@ -38,8 +38,17 @@ function searchInWiki(search) {
             'Api-User-Agent': 'Example/1.0'
         },
         success: function(data) {
-            alert("funciona");
+          $('h1').fadeOut( "slow");
+          $( "#Resultados" ).fadeIn( "slow", function() {
+            $( "#send" ).removeClass("btn-large waves-effect waves-light red ");
+            $( "#send" ).addClass("waves-effect waves-light btn");
+          });
+          if (data.query ) {
             processData(data.query.pages);
+          }else{
+            error()
+          }
+
         },
         error: function(err) {
             alert(err);
@@ -58,9 +67,13 @@ function processData(data) {
       html +=  '<p>'+ elem.extract  + '</p>';
     });
     $("#result").html(html);
-
 }
 
+function error(){
+  var html = "";
+  html = '<li class="collection-item avatar"> <img src="http://cdn-www.you.co.za/wp-content/uploads/2014/08/cat-sad.jpg" alt="" class="circle"> <a href="#!" class="title">Error</a> <p>No results found </p></li>'
+  $("#result").html(html);
+}
 
 $("form").submit(function() {
     searchInWiki($("#search").val());
