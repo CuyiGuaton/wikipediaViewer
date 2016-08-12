@@ -1,74 +1,52 @@
-// functions
-function pingApi() {
-  $.ajax({
-    url: "https://en.wikipedia.org/w/api.php",
-    data: {
-      "action": "query",
-      "format": "json",
-      "generator": "search",
-      "gsrlimit": 10,
-      "prop": "info|pageimages|extracts",
-      "exintro": 1,
-      "explaintext": 1,
-      "exsentences": 1,
-      "exlimit": "max",
-      "pilimit": "max",
-      "inprop": "url",
-      "redirects": 1,
-      "gsrsearch": fetchQuery()
-    },
-    dataType: 'jsonp',
-    type: 'POST',
-    async: false,
-    headers: {
-      'Api-User-Agent': 'Example/1.0'
-    },
-    success: function(data) {
-      var pages = data.query.pages;
-      displayPages(pages);
-    },
-    error: function(err) {
-      alert(err);
-    }
-  });
+function searchInWiki(search) {
+    //http://stackoverflow.com/questions/8930867/wikipedia-list-search-rest-api-how-to-retrieve-also-url-of-matching-articles
+    //https://en.wikipedia.org/w/api.php?action=opensearch&search=pico&aplimit=10&&format=jsonfm
+    //El ajax de abajo lo conseguiste de
+    //http://stackoverflow.com/questions/25891076/wikipedia-api-fulltext-search-to-return-articles-with-title-snippet-and-image
+    //https://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url
+    //son lo casi mismo (cambiar jsonfm por json y quitar callback para ver, callback se pone al final del link para enviar algo a la wiki y no te de error)
+    //$.getJSON("https://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url&callback=?", function (data){
+    $.ajax({
+        url: 'http://en.wikipedia.org/w/api.php',
+        data: {
+            "format": "json",
+            "action": "query",
+            "generator": "search",
+            "gsrnamespace": 0,
+            "gsrsearch": search,
+            "gsrlimit": 10,
+            "prop": "pageimages|extracts|info",
+            "exintro": 1,
+            "explaintext": 1, // Muestra en texto plano en vez de html
+            "pilimit": "max",
+            "exsentences": 1,
+            "exlimit": "max",
+            "inprop": "url" //muestra la url canonica, pero necesita prop= info para verla
+        },
+        dataType: 'jsonp',
+        type: 'POST',
+        async: false,
+        headers: {
+            'Api-User-Agent': 'Example/1.0'
+        },
+        success: function(data) {
+            alert("funciona");
+            processData(data.query.pages);
+        },
+        error: function(err) {
+            alert(err);
+        }
+    });
 }
 
-function fetchQuery() {
-  var q = $("#query").val()
-  if (!q) {
-    alert("Please enter a search query");
-  } else {
-    $("#query").val("");
-    return q
-  }
+function processData(data) {
+    $.each(data, function(ind, elem) {
+        console.log(elem.pageid);
+        $("#result").html(elem.pageid);
+    });
 }
 
-function displayPages(pages) {
-  var html = "";
-  $.each(pages, function(index, value) {
-    var url = value.canonicalurl;
-    var title = value.title;
-    var extract = value.extract;
-    if (!value.thumbnail) {
-      var image = " ";
-    } else {
-      var thumb = value.thumbnail.source;
-      var image = "<img src='" + thumb + "' alt='Page image for " + title + "' class='thumbnail'>";
-    }
-    html += "<li class='list-group-item'>";
-    html += image;
-    html += "<a href='" + url + "' target='_blank'>" + title + "</a>";
-    html += "<p class='extract'>" + extract + "</p>";
-    html += "</li>";
 
-  });
-  $("#result").html(html);
-}
-
-// runtime
-$(document).ready(function() {
-  $("#send").on("submit", function(e) {
-    e.preventDefault();
-    pingApi();
-  });
+$("form").submit(function() {
+    searchInWiki($("#search").val());
 });
