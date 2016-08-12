@@ -39,10 +39,8 @@ function searchInWiki(search) {
         },
         success: function(data) {
           $('h1').fadeOut( "slow");
-          $( "#Resultados" ).fadeIn( "slow", function() {
-            $( "#send" ).removeClass("btn-large waves-effect waves-light red ");
-            $( "#send" ).addClass("waves-effect waves-light btn");
-          });
+          $( "#Resultados" ).fadeIn( "slow");
+          
           if (data.query ) {
             processData(data.query.pages);
           }else{
@@ -75,6 +73,7 @@ function error(){
   $("#result").html(html);
 }
 
-$("form").submit(function() {
+$("form").submit(function(e) {
     searchInWiki($("#search").val());
+
 });
