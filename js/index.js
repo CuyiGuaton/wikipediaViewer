@@ -9,19 +9,19 @@ function searchInWiki(search) {
     $.ajax({
         url: 'http://en.wikipedia.org/w/api.php',
         data: {
-          "format": "json",
-          "action":"query",
-          "generator":"search",
-          "gsrnamespace":0,
-          "gsrsearch":search,
-          "gsrlimit":10,
-          "prop":"pageimages|extracts|info",
-          "exintro":1,
-          "explaintext":1, // Muestra en texto plano en vez de html
-          "pilimit":"max",
-          "exsentences":1,
-          "exlimit":"max",
-          "inprop":"url" //muestra la url canonica, pero necesita prop= info para verla
+            "format": "json",
+            "action": "query",
+            "generator": "search",
+            "gsrnamespace": 0,
+            "gsrsearch": search,
+            "gsrlimit": 10,
+            "prop": "pageimages|extracts|info",
+            "exintro": 1,
+            "explaintext": 1, // Muestra en texto plano en vez de html
+            "pilimit": "max",
+            "exsentences": 1,
+            "exlimit": "max",
+            "inprop": "url" //muestra la url canonica, pero necesita prop= info para verla
         },
         dataType: 'jsonp',
         type: 'POST',
@@ -30,15 +30,23 @@ function searchInWiki(search) {
             'Api-User-Agent': 'Example/1.0'
         },
         success: function(data) {
-            $("#result").html("data");
+            alert("funciona");
+            processData(data.query.pages);
         },
         error: function(err) {
-          alert(err);
+            alert(err);
         }
+    });
+}
+
+function processData(data) {
+    $.each(data, function(ind, elem) {
+        console.log(elem.pageid);
+        $("#result").html(elem.pageid);
     });
 }
 
 
 $("form").submit(function() {
-    searchInWiki( $("#search").val());
+    searchInWiki($("#search").val());
 });
