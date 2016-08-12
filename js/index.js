@@ -48,10 +48,16 @@ function searchInWiki(search) {
 }
 
 function processData(data) {
+    var html = '';
     $.each(data, function(ind, elem) {
-        console.log(elem.pageid);
-        $("#result").html(elem.pageid);
+      html += '<li class="collection-item avatar">';
+      if(elem.thumbnail != undefined){
+      html += '<img src="' + elem.thumbnail.source +  '" alt="" class="circle">';}
+      html +=  '<span class="'+ elem.title + '">Title</span>'
+      html +=  '<p>'+ elem.extract  + '</p>';
     });
+    $("#result").html(html);
+
 }
 
 
