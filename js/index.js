@@ -1,19 +1,20 @@
-function searchInWiki(search) {
-    //http://stackoverflow.com/questions/8930867/wikipedia-list-search-rest-api-how-to-retrieve-also-url-of-matching-articles
-    //https://en.wikipedia.org/w/api.php?action=opensearch&search=pico&aplimit=10&&format=jsonfm
-    //El ajax de abajo lo conseguiste de
-    //http://stackoverflow.com/questions/25891076/wikipedia-api-fulltext-search-to-return-articles-with-title-snippet-and-image
-    //http://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url
-    //son lo casi mismo (cambiar jsonfm por json y quitar callback para ver, callback se pone al final del link para enviar algo a la wiki y no te de error)
-    //$.getJSON("http://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url&callback=?", function (data){
-    // $.ajax({
-    //   url: 'http://en.wikipedia.org/w/api.php',
-    //   data: { action: 'query', list: 'search', srsearch: 'pico', format: 'json' },
-    //   dataType: 'jsonp',
-    //   success: function (x) {
-    //     console.log('title', x.query.search[2].title);
-    //   }
-    // });
+//http://stackoverflow.com/questions/8930867/wikipedia-list-search-rest-api-how-to-retrieve-also-url-of-matching-articles
+//https://en.wikipedia.org/w/api.php?action=opensearch&search=pico&aplimit=10&&format=jsonfm
+//El ajax de abajo lo conseguiste de
+//http://stackoverflow.com/questions/25891076/wikipedia-api-fulltext-search-to-return-articles-with-title-snippet-and-image
+//http://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url
+//son lo casi mismo (cambiar jsonfm por json y quitar callback para ver, callback se pone al final del link para enviar algo a la wiki y no te de error)
+//$.getJSON("http://en.wikipedia.org/w/api.php?format=jsonfm&action=query&generator=search&gsrnamespace=0&gsrsearch=test&gsrlimit=10&prop=pageimages|extracts|info&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&inprop=url&callback=?", function (data){
+// $.ajax({
+//   url: 'http://en.wikipedia.org/w/api.php',
+//   data: { action: 'query', list: 'search', srsearch: 'pico', format: 'json' },
+//   dataType: 'jsonp',
+//   success: function (x) {
+//     console.log('title', x.query.search[2].title);
+//   }
+// });
+
+  function searchInWiki(search) {
     $.ajax({
         url: 'http://en.wikipedia.org/w/api.php',
         data: {
@@ -40,7 +41,7 @@ function searchInWiki(search) {
         success: function(data) {
           $('h1').fadeOut( "slow");
           $( "#Resultados" ).fadeIn( "slow");
-          
+
           if (data.query ) {
             processData(data.query.pages);
           }else{
